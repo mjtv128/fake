@@ -6,10 +6,10 @@ import re
 from nltk.stem.porter import PorterStemmer
 app = Flask(__name__)
 ps = PorterStemmer()
-# Load model and vectorizer
+
 model = pickle.load(open('model1.pkl', 'rb'))
 tfidfvect = pickle.load(open('vec.pkl', 'rb'))
-# Build functionalities
+
 @app.route('/', methods=['GET'])
 def home():
     return render_template('index.html')
@@ -22,11 +22,13 @@ def predict(text):
     review_vect = tfidfvect.transform([review]).toarray()
     prediction = 'FAKE' if model.predict(review_vect) == 1 else 'REAL'
     return prediction
+
 @app.route('/', methods=['POST'])
 def webapp():
     text = request.form['text']
     prediction = predict(text)
     return render_template('index.html', text=text, result=prediction)
+    
 @app.route('/predict/', methods=['GET','POST'])
 def api():
     text = request.args.get("text")
