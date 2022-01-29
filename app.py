@@ -28,11 +28,12 @@ def webapp():
     text = request.form['text']
     prediction = predict(text)
     return render_template('index.html', text=text, result=prediction)
-    
+
 @app.route('/predict/', methods=['GET','POST'])
 def api():
     text = request.args.get("text")
     prediction = predict(text)
     return jsonify(prediction=prediction)
+    
 if __name__ == "__main__":
     app.run()
